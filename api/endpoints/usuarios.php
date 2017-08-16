@@ -4,7 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '_class/usuarioDao.php';
 
-$app->get('/usuarios/{usu_int_codigo}', function (Request $request, Response $response) {
+$app->get('/usuarios/{usu_int_codigo}/{apikey}', function (Request $request, Response $response) {
     $usu_int_codigo = $request->getAttribute('usu_int_codigo');
     
     $usuario = new Usuario();
@@ -16,7 +16,7 @@ $app->get('/usuarios/{usu_int_codigo}', function (Request $request, Response $re
 	return $response->withJson($data, $code);
 });
 
-$app->post('/usuarios', function (Request $request, Response $response) {
+$app->post('/usuarios/{apikey}', function (Request $request, Response $response) {
     $body = $request->getParsedBody();
 
     $usuario = new Usuario();
@@ -30,7 +30,7 @@ $app->post('/usuarios', function (Request $request, Response $response) {
 	return $response->withJson($data, $code);
 });
 
-$app->put('/usuarios/{usu_int_codigo}', function (Request $request, Response $response) {
+$app->put('/usuarios/{usu_int_codigo}/{apikey}', function (Request $request, Response $response) {
     $body = $request->getParsedBody();
 	$usu_int_codigo = $request->getAttribute('usu_int_codigo');
     
@@ -46,7 +46,7 @@ $app->put('/usuarios/{usu_int_codigo}', function (Request $request, Response $re
 	return $response->withJson($data, $code);
 });
 
-$app->delete('/usuarios/{usu_int_codigo}', function (Request $request, Response $response) {
+$app->delete('/usuarios/{usu_int_codigo}/{apikey}', function (Request $request, Response $response) {
 	$usu_int_codigo = $request->getAttribute('usu_int_codigo');
     
     $usuario = new Usuario();

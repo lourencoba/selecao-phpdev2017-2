@@ -1,10 +1,15 @@
 <?php
 class Animal{
 	private $ani_int_codigo;
+
+	/* @var $proprietario Proprietario */
+	private $proprietario;
+	/* @var $raca Raca */
+	private $raca;
+
 	private $ani_var_nome;
 	private $ani_cha_vivo;
 	private $ani_dec_peso;
-	private $ani_var_raca;
 
 
 	public function getAni_int_codigo() {
@@ -13,6 +18,22 @@ class Animal{
 
 	public function setAni_int_codigo($ani_int_codigo) {
 		$this->ani_int_codigo = $ani_int_codigo;
+	}
+	
+	public function getProprietario() {
+		return $this->proprietario;
+	}
+
+	public function setProprietario($proprietario) {
+		$this->proprietario = $proprietario;
+	}
+	
+	public function getRaca() {
+		return $this->raca;
+	}
+
+	public function setRaca($raca) {
+		$this->raca = $raca;
 	}
 
 	public function getAni_var_nome() {
@@ -37,14 +58,6 @@ class Animal{
 
 	public function setAni_dec_peso($ani_dec_peso) {
 		$this->ani_dec_peso = $ani_dec_peso;
-	}
-
-	public function getAni_var_raca() {
-		return $this->ani_var_raca;
-	}
-
-	public function setAni_var_raca($ani_var_raca) {
-		$this->ani_var_raca = $ani_var_raca;
 	}
 
 }

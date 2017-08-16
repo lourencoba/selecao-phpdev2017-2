@@ -3,9 +3,9 @@ require_once '../_inc/global.php';
 
 $form = new GForm();
 
-$header = new GHeader('Usuários');
-$header->addLib(array('paginate'));
-$header->show(false, 'usuario/usuario.php');
+$header = new GHeader('Proprietários');
+$header->addLib(array('paginate', 'maskMoney'));
+$header->show(false, 'proprietarios/proprietarios.php');
 // ---------------------------------- Header ---------------------------------//
 
 
@@ -13,21 +13,21 @@ $html .= '<div id="divTable" class="row">';
 $html .= getWidgetHeader();
 //<editor-fold desc="Formulário de Filtro">
 $html .= $form->open('filter', 'form-inline filterForm');
-$html .= $form->addInput('text', 'p__usu_var_nome', false, array('placeholder' => 'Nome', 'class' => 'sepV_b m-wrap small'), false, false, false);
+$html .= $form->addInput('text', 'p__pro_var_nome', false, array('placeholder' => 'Nome', 'class' => 'sepV_b m-wrap small'), false, false, false);
 
 $html .= getBotoesFiltro();
 $html .= getBotaoAdicionar();
 $html .= $form->close();
 //</editor-fold>
 
-$paginate = new GPaginate('usuario', 'usuario_load.php', SYS_PAGINACAO);
+$paginate = new GPaginate('proprietario', 'proprietario_load.php', SYS_PAGINACAO);
 $html .= $paginate->get();
 $html .= '</div>'; //divTable
 $html .= getWidgetFooter();
 echo $html;
 
 echo '<div id="divForm" class="row divForm">';
-include 'usuario_form.php';
+include 'proprietario_form.php';
 echo '</div>';
 
 // ---------------------------------- Footer ---------------------------------//
@@ -35,12 +35,12 @@ $footer = new GFooter();
 $footer->show();
 ?>
 <script>
-    var pagCrud = 'usuario_crud.php';
-    var pagView = 'usuario_view.php';
-    var pagLoad = 'usuario_load.php';
+    var pagCrud = 'proprietario_crud.php';
+    var pagView = 'proprietario_view.php';
+    var pagLoad = 'proprietario_load.php';
 
     function filtrar(page) {
-        usuarioLoad('', '', '', $('#filter').serializeObject(), page);
+        proprietarioLoad('', '', '', $('#filter').serializeObject(), page);
         return false;
     }
 
@@ -51,8 +51,10 @@ $footer->show();
             return false;
         });
         $('#filter').submit(function() {
-            filtrar(1);
-            return false;
+            if ($('#filter').attr('action').length === 0) {
+                filtrar(1);
+                return false;
+            }
         });
         $('#p__btn_limpar').click(function() {
             clearForm('#filter');
@@ -65,20 +67,20 @@ $footer->show();
             showForm('divForm', 'ins', 'Adicionar');
         });
         $(document).on('click', '.l__btn_editar, tr.linhaRegistro td:not([class~="acoes"])', function() {
-            var usu_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
+            var pro_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
 
             scrollTop();
-            selectLine(usu_int_codigo);
+            selectLine(pro_int_codigo);
 
-            loadForm(URL_API + 'usuarios/' + usu_int_codigo + '/' + API_KEY, function(json) {
+            loadForm(URL_API + 'proprietarios/' + pro_int_codigo + '/' + API_KEY, function(json) {
                 showForm('divForm', 'upd', 'Editar');
             });
         });
         $(document).on('click', '.l__btn_excluir', function() {
-            var usu_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
+            var pro_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
 
             $.gDisplay.showYN("Quer realmente deletar o item selecionado?", function() {
-                $.gAjax.exec('DELETE', URL_API + 'usuarios/' + usu_int_codigo + '/' + API_KEY, false, false, function(json) {
+                $.gAjax.exec('DELETE', URL_API + 'proprietarios/' + pro_int_codigo + '/' + API_KEY, false, false, function(json) {
                     if (json.status) {
                         filtrar();
                     }

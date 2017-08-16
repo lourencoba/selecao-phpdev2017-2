@@ -144,9 +144,8 @@ BEGIN
   SET p_msg = '';
   SET p_status = FALSE;
 
-
     -- VALIDACOES
-   SELECT IF(count(1) = 0, FALSE, TRUE)
+  SELECT IF(count(1) = 0, FALSE, TRUE)
   INTO v_existe
   FROM animal_vacina
   WHERE anv_int_codigo = p_anv_int_codigo;

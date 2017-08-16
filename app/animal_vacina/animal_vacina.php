@@ -3,9 +3,9 @@ require_once '../_inc/global.php';
 
 $form = new GForm();
 
-$header = new GHeader('Animais');
+$header = new GHeader('Vacinação');
 $header->addLib(array('paginate', 'maskMoney'));
-$header->show(false, 'animal/animal.php');
+$header->show(false, 'animal_vacina/animal_vacina.php');
 // ---------------------------------- Header ---------------------------------//
 
 
@@ -13,21 +13,23 @@ $html .= '<div id="divTable" class="row">';
 $html .= getWidgetHeader();
 //<editor-fold desc="Formulário de Filtro">
 $html .= $form->open('filter', 'form-inline filterForm');
-$html .= $form->addInput('text', 'p__ani_var_nome', false, array('placeholder' => 'Nome', 'class' => 'sepV_b m-wrap small'), false, false, false);
+$html .= $form->addInput('text', 'p__vac_var_nome', false, array('placeholder' => 'Vacina', 'class' => 'sepV_b m-wrap small'), false, false, false);
+$html .= $form->addInput('text', 'p__ani_var_nome', false, array('placeholder' => 'Animal', 'class' => 'sepV_b m-wrap small'), false, false, false);
+$html .= $form->addInput('text', 'p__pro_var_nome', false, array('placeholder' => 'Proprietário', 'class' => 'sepV_b m-wrap small'), false, false, false);
 
 $html .= getBotoesFiltro();
 $html .= getBotaoAdicionar();
 $html .= $form->close();
 //</editor-fold>
 
-$paginate = new GPaginate('animal', 'animal_load.php', SYS_PAGINACAO);
+$paginate = new GPaginate('animalVacina', 'animal_vacina_load.php', SYS_PAGINACAO);
 $html .= $paginate->get();
 $html .= '</div>'; //divTable
 $html .= getWidgetFooter();
 echo $html;
 
 echo '<div id="divForm" class="row divForm">';
-include 'animal_form.php';
+include 'animal_vacina_form.php';
 echo '</div>';
 
 // ---------------------------------- Footer ---------------------------------//
@@ -35,12 +37,12 @@ $footer = new GFooter();
 $footer->show();
 ?>
 <script>
-    var pagCrud = 'animal_crud.php';
-    var pagView = 'animal_view.php';
-    var pagLoad = 'animal_load.php';
+    var pagCrud = 'animal_vacina_crud.php';
+    var pagView = 'animal_vacina_view.php';
+    var pagLoad = 'animal_vacina_load.php';
 
     function filtrar(page) {
-        animalLoad('', '', '', $('#filter').serializeObject(), page);
+        animalVacinaLoad('', '', '', $('#filter').serializeObject(), page);
         return false;
     }
 
@@ -66,22 +68,38 @@ $footer->show();
 
             showForm('divForm', 'ins', 'Adicionar');
         });
+
         $(document).on('click', '.l__btn_editar, tr.linhaRegistro td:not([class~="acoes"])', function() {
-            var ani_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
+            var anv_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
 
             scrollTop();
-            selectLine(ani_int_codigo);
+            selectLine(anv_int_codigo);
 
-            loadForm(URL_API + 'animais/' + ani_int_codigo + '/' + API_KEY, function(json) {
-                $('#ani_dec_peso').val(numberFormat(json.ani_dec_peso,3));
+            loadForm(URL_API + 'animalvacinas/' + anv_int_codigo + '/' + API_KEY, function(json) {
                 showForm('divForm', 'upd', 'Editar');
             });
         });
+        
+        $(document).on('click', '.btn_aplicar_vacina', function() {
+            var anv_int_codigo = $(this).attr('anv_int_codigo');
+
+            scrollTop();
+            
+            $.gDisplay.showYN("Confirma a aplicação da vacina?", function() {
+                $.gAjax.exec('PUT', URL_API + 'aplicacaovacina/' + anv_int_codigo, false, false, function(json) {
+                    if (json.status) {
+                        filtrar();
+                    }
+                });
+            });
+        });
+
+
         $(document).on('click', '.l__btn_excluir', function() {
-            var ani_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
+            var anv_int_codigo = $(this).parents('tr.linhaRegistro').attr('id');
 
             $.gDisplay.showYN("Quer realmente deletar o item selecionado?", function() {
-                $.gAjax.exec('DELETE', URL_API + 'animais/' + ani_int_codigo + '/' + API_KEY, false, false, function(json) {
+                $.gAjax.exec('DELETE', URL_API + 'animalvacinas/' + anv_int_codigo + '/' + API_KEY, false, false, function(json) {
                     if (json.status) {
                         filtrar();
                     }

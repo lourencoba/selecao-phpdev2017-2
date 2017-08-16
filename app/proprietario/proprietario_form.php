@@ -9,10 +9,10 @@ $htmlForm .= getWidgetHeader($title, $tools);
 //<editor-fold desc="Formulário">
 $htmlForm .= $form->open('form', 'form-vertical form');
 $htmlForm .= $form->addInput('hidden', 'acao', false, array('value' => 'ins', 'class' => 'acao'), false, false, false);
-$htmlForm .= $form->addInput('hidden', 'usu_int_codigo', false, array('value' => ''), false, false, false);
-$htmlForm .= $form->addInput('text', 'usu_var_nome', 'Nome*', array('maxlength' => '50', 'validate' => 'required'));
-$htmlForm .= $form->addInput('text', 'usu_var_email', 'Email*', array('maxlength' => '100', 'validate' => 'required;email'));
-$htmlForm .= $form->addSelect('usu_cha_status', array('A' => 'Ativo', 'I' => 'Inativo'), '', 'Status*', array('validate' => 'required'), false, false, true, '', 'Selecione...');
+$htmlForm .= $form->addInput('hidden', 'pro_int_codigo', false, array('value' => ''), false, false, false);
+$htmlForm .= $form->addInput('text', 'pro_var_nome', 'Nome*', array('maxlength' => '50', 'validate' => 'required'));
+$htmlForm .= $form->addInput('text', 'pro_var_email', 'Email*', array('maxlength' => '100', 'validate' => 'required;email'));
+$htmlForm .= $form->addInput('text', 'pro_var_telefone', 'Telefone', array('maxlength' => '15'));
 
 $htmlForm .= '<div class="form-actions">';
 $htmlForm .= getBotoesAcao(true);
@@ -27,11 +27,11 @@ echo $htmlForm;
     $(function() {
 
         $('#form').submit(function() {
-            var usu_int_codigo = $('#usu_int_codigo').val();
+            var pro_int_codigo = $('#pro_int_codigo').val();
             $('#p__selecionado').val();
             if ($('#form').gValidate()) {
                 var method = ($('#acao').val() == 'ins') ? 'POST' : 'PUT';
-                var endpoint = ($('#acao').val() == 'ins') ? URL_API + 'usuarios' + '/' + API_KEY : URL_API + 'usuarios/' + usu_int_codigo + '/' + API_KEY;
+                var endpoint = ($('#acao').val() == 'ins') ? URL_API + 'proprietarios' + '/' + API_KEY : URL_API + 'proprietarios/' + pro_int_codigo + '/' + API_KEY;
                 $.gAjax.exec(method, endpoint, $('#form').serializeArray(), false, function(json) {
                     if (json.status) {
                         showList(true);
@@ -47,10 +47,10 @@ echo $htmlForm;
         });
 
         $('#f__btn_excluir').click(function() {
-            var usu_int_codigo = $('#usu_int_codigo').val();
+            var pro_int_codigo = $('#pro_int_codigo').val();
 
             $.gDisplay.showYN("Quer realmente deletar o item selecionado?", function() {
-                $.gAjax.exec('DELETE', URL_API + 'usuarios/' + usu_int_codigo + '/' + API_KEY, false, false, function(json) {
+                $.gAjax.exec('DELETE', URL_API + 'proprietarios/' + pro_int_codigo + '/' + API_KEY, false, false, function(json) {
                     if (json.status) {
                         showList(true);
                     }

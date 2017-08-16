@@ -119,14 +119,18 @@ class GF {
         $return = $string;
         if (!empty($string)) {
             if ($brasil) {
-                $dataHora = split(" ", $string);
-                $data = split("/", $dataHora[0]);
+                /*
+                #ALTERAÇÃO FRAMEWORK
+                A função split foi removida do PHP 7, alterei para explode
+                */
+                $dataHora = explode(" ", $string);
+                $data = explode("/", $dataHora[0]);
                 if (count($data) > 1) {
                     $return = $data[2] . "-" . $data[1] . "-" . $data[0] . ' ' . $dataHora[1];
                 }
             } else {
-                $dataHora = split(" ", $string);
-                $data = split("-", $dataHora[0]);
+                $dataHora = explode(" ", $string);
+                $data = explode("-", $dataHora[0]);
                 if (count($data) > 1) {
                     $return = $data[0] . "/" . $data[1] . "/" . $data[2] . ' ' . $dataHora[1];
                 }

@@ -22,6 +22,11 @@ class Theme {
 
             // ---------- Plugins defaults ---------- //            
             'plugins/jquery-ui/jquery-ui.min.js',
+            
+            //Adicionado o css do Jquery UI para estilizar o datepicker
+            'plugins/jquery-ui/jquery-ui.min.css',
+
+            'plugins/jquery-ui/jquery-ui.min.js',
             'plugins/bootstrap/js/bootstrap.min.js',
             'plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js',
             'plugins/jquery-slimscroll/jquery.slimscroll.min.js',

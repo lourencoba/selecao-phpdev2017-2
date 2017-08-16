@@ -6,6 +6,11 @@ class GHeader extends GHeaderParent {
     private $subtitulo;
 
     function __construct($tilulo, $subtitulo = '') {
+        //Caso não esteja logado, redireciona para o login
+        if (!GAuth::logado()) {
+            header("Location: ".URL_SYS."login.php");
+        }
+
         $this->titulo = $tilulo;
         $this->subtitulo = $subtitulo;
 
@@ -21,7 +26,6 @@ class GHeader extends GHeaderParent {
      */
     function show($isIframe = false, $currentMenu = '', $breadcrumb = '') {
         parent::show();
-
         $html = '';
         $html .= '<meta name="description" content="">';
         $html .= '<meta name="author" content="">';
@@ -42,6 +46,9 @@ class GHeader extends GHeaderParent {
             }
             
             $html .= '<script>var URL_API = "' . URL_API . '";</script>';
+
+            //Atribuindo a constante API_KEY para o javascript
+            $html .= '<script>var API_KEY = "' . API_KEY . '";</script>';
 
             $html .= '<div class="page-header">'; 
             $html .= '<div class="page-header-top">';
@@ -110,6 +117,9 @@ class GHeader extends GHeaderParent {
         $arrayMenu[] = array('title' => 'Início', 'url' => 'index.php', 'icon' => 'fa fa-home');
         $arrayMenu[] = array('title' => 'Usuários', 'url' => 'usuario/usuario.php', 'icon' => 'fa fa-user');
         $arrayMenu[] = array('title' => 'Animais', 'url' => 'animal/animal.php', 'icon' => 'fa fa-github');
+        $arrayMenu[] = array('title' => 'Proprietários', 'url' => 'proprietario/proprietario.php', 'icon' => 'fa fa-user-secret');
+        $arrayMenu[] = array('title' => 'Vacinação', 'url' => 'animal_vacina/animal_vacina.php', 'icon' => 'fa fa-medkit');
+        $arrayMenu[] = array('title' => 'Sair', 'url' => 'logout.php', 'icon' => 'fa fa-sign-out');
 
         foreach ($arrayMenu as $menu) {
             $html .= '<li class="' . $active . '">';

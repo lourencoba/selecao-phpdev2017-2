@@ -9,8 +9,8 @@ session_start();
     $scriptRoot = explode('/', str_replace('_inc', '', __DIR__));
     $scriptName = explode('/', $_SERVER['SCRIPT_NAME']);
     $arrayCaminho = array_intersect($scriptRoot, $scriptName);
-
-    $complementoPasta = '';
+    
+    $complementoPasta = 'selecao-phpdev2017-2/app/';
     if (count($arrayCaminho) > 0) {
         foreach ($arrayCaminho as $pasta) {
             if (!empty($pasta)) {

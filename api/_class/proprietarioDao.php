@@ -1,16 +1,13 @@
-
 <?php
-require_once("animal.php");
 require_once("proprietario.php");
-require_once("raca.php");
 
-class AnimalDao {
-    /** @param Animal $animal */
-    public function selectByIdForm($animal) {
+class ProprietarioDao {
+    /** @param Proprietario $proprietario */
+    public static function selectByIdForm($proprietario) {
         $ret = array();
         try {
             $mysql = new GDbMysql();
-            $mysql->execute("SELECT ani_int_codigo, pro_int_codigo, rac_int_codigo, rac_var_nome, pro_var_nome, ani_var_nome, ani_cha_vivo, ani_dec_peso FROM vw_animal WHERE ani_int_codigo = ? ", array("i", $animal->getAni_int_codigo()), true, MYSQL_ASSOC);
+            $mysql->execute("SELECT pro_int_codigo, pro_var_nome, pro_var_email, pro_var_telefone, pro_dti_inclusao FROM vw_proprietario WHERE pro_int_codigo = ? ", array("i", $proprietario->getPro_int_codigo()), true, MYSQL_ASSOC);
             if ($mysql->fetch()) {
                 $ret = $mysql->res;
             }
@@ -21,20 +18,17 @@ class AnimalDao {
         return $ret;
     }
 
-    /** @param Animal $animal */
-    public function insert($animal) {
-        $return = array();
-        $param = array("iisds",
-            $animal->getProprietario()->getPro_int_codigo(),
-            $animal->getRaca()->getRac_int_codigo(),
-            $animal->getAni_var_nome(),
-            $animal->getAni_dec_peso(),
-            $animal->getAni_cha_vivo()           
-            );
+    /** @param Proprietario $proprietario */
+    public static function insert($proprietario) {
 
+        $return = array();
+        $param = array("sss",
+            $proprietario->getPro_var_nome(),
+            $proprietario->getPro_var_email(),
+            $proprietario->getPro_var_telefone());
         try{
             $mysql = new GDbMysql();
-            $mysql->execute("CALL sp_animal_ins(?,?,?,?,?, @p_status, @p_msg, @p_insert_id);", $param, false);
+            $mysql->execute("CALL sp_proprietario_ins(?,?,?, @p_status, @p_msg, @p_insert_id);", $param, false);
             $mysql->execute("SELECT @p_status, @p_msg, @p_insert_id");
             $mysql->fetch();
             $return["status"] = ($mysql->res[0]) ? true : false;
@@ -48,21 +42,18 @@ class AnimalDao {
         return $return;
     }
 
-    /** @param Animal $animal */
-    public function update($animal) {
+    /** @param Proprietario $proprietario */
+    public static function update($proprietario) {
 
         $return = array();
-        $param = array("iiisds",
-            $animal->getAni_int_codigo(),
-            $animal->getProprietario()->getPro_int_codigo(),
-            $animal->getRaca()->getRac_int_codigo(),
-            $animal->getAni_var_nome(),
-            $animal->getAni_dec_peso(),
-            $animal->getAni_cha_vivo());
-            
+        $param = array("isss",
+            $proprietario->getPro_int_codigo(),
+            $proprietario->getPro_var_nome(),
+            $proprietario->getPro_var_email(),
+            $proprietario->getPro_var_telefone());
         try{
             $mysql = new GDbMysql();
-            $mysql->execute("CALL sp_animal_upd(?,?,?,?,?,?, @p_status, @p_msg);", $param, false);
+            $mysql->execute("CALL sp_proprietario_upd(?,?,?,?, @p_status, @p_msg);", $param, false);
             $mysql->execute("SELECT @p_status, @p_msg");
             $mysql->fetch();
             $return["status"] = ($mysql->res[0]) ? true : false;
@@ -75,14 +66,14 @@ class AnimalDao {
         return $return;
     }
 
-    /** @param Animal $animal */
-    public function delete($animal) {
+    /** @param Proprietario $proprietario */
+    public static function delete($proprietario) {
 
         $return = array();
-        $param = array("i",$animal->getAni_int_codigo());
+        $param = array("i",$proprietario->getPro_int_codigo());
         try {
             $mysql = new GDbMysql();
-            $mysql->execute("CALL sp_animal_del(?, @p_status, @p_msg);", $param, false);
+            $mysql->execute("CALL sp_proprietario_del(?, @p_status, @p_msg);", $param, false);
             $mysql->execute("SELECT @p_status, @p_msg");
             $mysql->fetch();
             $return["status"] = ($mysql->res[0]) ? true : false;

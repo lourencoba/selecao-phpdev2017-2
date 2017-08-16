@@ -28,6 +28,10 @@ class Genesis {
         require_once(ROOT_GENESIS . "inc/functions.class.php");
         require_once(ROOT_GENESIS . "inc/exceptions/exceptions.php");
         require_once(ROOT_GENESIS . "inc/database.class.php");
+
+        //Class de autenticação
+        require_once(ROOT_GENESIS . "inc/auth.class.php");
+        
         require_once(ROOT_GENESIS . "inc/filter.class.php");
         require_once(ROOT_GENESIS . "inc/header.lib.php");
         require_once(ROOT_GENESIS . "inc/header.parent.class.php");
